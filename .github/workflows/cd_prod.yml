@@ -20,18 +20,12 @@ jobs:
           chmod 600 sagar.pem
           
           ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
-            export PATH=$HOME/.local/bin:$HOME/.nvm/versions/node/v18/bin:$PATH  # Add pnpm & pm2 path
-            source ~/.bashrc  # Reload profile (if needed)
-            
-            # Check if pnpm and pm2 exist
-            which pnpm || echo "Error: pnpm not found"
-            which pm2 || echo "Error: pm2 not found"
-
             cd truborepo-test1/
             git pull
-            pnpm install || npm install -g pnpm  # Install pnpm if missing
+            npm install -g pnpm 
+            pnpm install
             pnpm run build
-            pm2 restart fe-server || echo "Error: pm2 restart failed"
+            pm2 restart fe-server  
             pm2 restart http-server
             pm2 restart ws-server
           EOF
