@@ -10,6 +10,7 @@ on:
 
   
 jobs:
+  uses: ubuntu-latest
   redeploy_everything:
     name: Deploying to prod
 
