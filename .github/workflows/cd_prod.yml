@@ -19,15 +19,11 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
           chmod 600 sagar.pem
           
-          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bashDD
-            source ~/.bashrc
-            cd truborepo-test1/
-            git pull
-            npm install -g pnpm 
-            pnpm install
-            pnpm run build
-            pm2 restart fe-server  
-            pm2 restart http-server
-            pm2 restart ws-server
-          EOF
+          ssh -i ~/sagar.pem ubuntu@51.20.76.69
+          cd truborepo-test1/
+          git pull
+          pnpm install
+          pnpm run build
+          pm2 restart fe-server  
+          pm2 restart http-server
+          pm2 restart ws-server
