@@ -1,30 +1,35 @@
-name: Linting and formating on PR/PUSH
+name: Linting and Formatting on PR/PUSH
 
 on:
   push:
     branches:
       - "main"
   pull_request:
-    branches: 
-        - "main"
+    branches:
+      - "main"
 
-  
 jobs:
   redeploy_everything:
     name: Deploying to prod
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH into server
+      - name: Setup SSH and Deploy
         run: |
-         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/sagar.pem
-         ssh -i ~/sagar.pem ubuntu@51.20.76.69
-         cd truborepo-test1/ && git pull 
-         pnpm install 
-         pnpm run build
-         pm2 restart fe-server
-         pm2 restart http-server
-         pm2 restart ws-server  
+          # Store private key securely
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
+          chmod 600 sagar.pem  # Secure the key
 
+          # Debug SSH issues
+          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 "echo 'SSH connected successfully'"
 
-    
+          # If SSH works, run deployment commands
+          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
+            cd truborepo-test1/
+            git pull
+            pnpm install
+            pnpm run build
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
+          EOF
