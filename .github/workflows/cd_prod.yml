@@ -19,16 +19,27 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
           chmod 600 sagar.pem  # Secure the private key
           
-          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
-            
+          ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=120 -i sagar.pem ubuntu@51.20.76.69 << 'EOF'
+            set -e  # Exit on error
+
             cd truborepo-test1/
             git pull
+            
+            # Load NVM
             export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Load NVM
-            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Load NVM bash completion
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  
+            source ~/.bashrc  # Ensure PATH updates
 
-            pnpm install
-            pnpm run build
+            # Ensure pnpm is installed
+            command -v pnpm || npm install -g pnpm
+
+            # Run build in background to prevent SSH timeout
+            nohup pnpm install > install.log 2>&1 &
+            wait
+            nohup pnpm run build > build.log 2>&1 &
+            wait
+
             pm2 restart fe-server
             pm2 restart http-server
             pm2 restart ws-server
