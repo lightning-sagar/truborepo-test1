@@ -1,13 +1,3 @@
-name: Linting and Formatting on PR/PUSH
-
-on:
-  push:
-    branches:
-      - "main"
-  pull_request:
-    branches:
-      - "main"
-
 jobs:
   redeploy_everything:
     name: Deploying to prod
@@ -16,20 +6,22 @@ jobs:
     steps:
       - name: Setup SSH and Deploy
         run: |
-          # Store private key securely
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
-          chmod 600 sagar.pem  # Secure the key
-
-          # Debug SSH issues
-          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 "echo 'SSH connected successfully'"
-
-          # If SSH works, run deployment commands
+          chmod 600 sagar.pem
+          
           ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
+            export PATH=$HOME/.local/bin:$HOME/.nvm/versions/node/v18/bin:$PATH  # Add pnpm & pm2 path
+            source ~/.bashrc  # Reload profile (if needed)
+            
+            # Check if pnpm and pm2 exist
+            which pnpm || echo "Error: pnpm not found"
+            which pm2 || echo "Error: pm2 not found"
+
             cd truborepo-test1/
             git pull
-            pnpm install
+            pnpm install || npm install -g pnpm  # Install pnpm if missing
             pnpm run build
-            pm2 restart fe-server
+            pm2 restart fe-server || echo "Error: pm2 restart failed"
             pm2 restart http-server
             pm2 restart ws-server
           EOF
