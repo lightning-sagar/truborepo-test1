@@ -17,9 +17,8 @@ jobs:
       - name: Setup SSH and Deploy
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
-          chmod 600 sagar.pem
           
-          ssh -i ~/sagar.pem ubuntu@51.20.76.69
+          ssh -i sagar.pem ubuntu@51.20.76.69
           cd truborepo-test1/
           git pull
           pnpm install
