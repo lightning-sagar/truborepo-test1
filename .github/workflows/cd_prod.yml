@@ -20,7 +20,18 @@ jobs:
           chmod 600 sagar.pem  # Secure the private key
           
           ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
-            npm
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Load NVM
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Load NVM bash completion
+
+            node -v  # ✅ Check if Node.js is available
+            npm -v   # ✅ Check if npm is available
+
             cd truborepo-test1/
-            npm
+            git pull
+            pnpm install
+            pnpm run build
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
           EOF
