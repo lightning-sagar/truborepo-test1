@@ -20,10 +20,10 @@ jobs:
           chmod 600 sagar.pem  # Secure the private key
           
           ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd truborepo-test1/
             git pull
+            export PATH=/root/.nvm/versions/node/v22.13.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+            npm install -g pnpm
             pnpm install
             pnpm run build || echo "Build failed, but continuing..."
             pm2 restart fe-server
