@@ -20,6 +20,8 @@ jobs:
           chmod 600 sagar.pem
           
           ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@51.20.76.69 << 'EOF'
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bashDD
+            source ~/.bashrc
             cd truborepo-test1/
             git pull
             npm install -g pnpm 
