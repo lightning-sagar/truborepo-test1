@@ -10,13 +10,13 @@ on:
 
   
 jobs:
-  uses: ubuntu-latest
   redeploy_everything:
     name: Deploying to prod
+    runs-on: ubuntu-latest
 
     steps:
       - name: SSH into server
-      - run: |
+        run: |
          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/sagar.pem
          ssh -i ~/sagar.pem ubuntu@51.20.76.69
          cd truborepo-test1/ && git pull 
