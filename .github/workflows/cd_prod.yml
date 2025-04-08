@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > sagar.pem
           chmod 600 sagar.pem  # Secure the private key
           
-          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@13.60.60.119 << 'EOF'
+          ssh -i sagar.pem -o StrictHostKeyChecking=no ubuntu@13.53.198.45 << 'EOF'
             cd truborepo-test1/
             git pull
             
