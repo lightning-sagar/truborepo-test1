@@ -5,7 +5,7 @@ export default async function Home() {
   console.log(user)
   return (
     <>
-    {user?.username} hi
+    {user?.username} hi its working
     </>
   );
 }
