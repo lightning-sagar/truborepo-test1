@@ -24,7 +24,7 @@ jobs:
             git pull
             
             # Load NVM
-            source PATH =/home/ubuntu/.nvm/versions/node/v22.14.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+            export PATH =/home/ubuntu/.nvm/versions/node/v22.14.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
             # Ensure pnpm is installed
             command -v pnpm || npm install -g pnpm
 
