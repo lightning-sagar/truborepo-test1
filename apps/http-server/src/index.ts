@@ -4,7 +4,7 @@ import {client} from "@repo/db/client"
 const app = express(); //ts ->js 
 app.use(express.json()); 
 app.get("/",(req,res)=>{
-    res.send("working");
+    res.send("working in deployment");
 })
 
 app.post("/signup",async(req,res)=>{

@@ -23,17 +23,8 @@ jobs:
             cd truborepo-test1/
             git pull
             
-            # Load NVM
             export PATH=/home/ubuntu/.nvm/versions/node/v22.14.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-            # Ensure pnpm is installed
             command -v pnpm || npm install -g pnpm
-
-            # Run build in background to prevent SSH timeout
-            nohup pnpm install > install.log 2>&1 &
-            wait
-            nohup pnpm run build > build.log 2>&1 &
-            wait
-
             pm2 restart fe-server
             pm2 restart http-server
             pm2 restart ws-server
