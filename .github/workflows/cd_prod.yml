@@ -26,7 +26,7 @@ jobs:
             export PATH=/home/ubuntu/.nvm/versions/node/v22.14.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
             command -v pnpm || npm install -g pnpm
 
-            pmpm run build 
+            pnpm run build 
             pm2 restart web
             pm2 restart http-server
             pm2 restart ws-server
